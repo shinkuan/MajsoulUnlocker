@@ -8,6 +8,10 @@ from mitmproxy import proxy, options
 from mitmproxy.tools.dump import DumpMaster
 from liqi import LiqiProto, MsgType
 from rich.console import Console
+from rich.table import Table
+from rich.text import Text
+from rich import box
+from rich.panel import Panel
 import json
 console = Console()
 
@@ -280,6 +284,48 @@ class LiqiModify:
 
     def parse(self, msg: dict):
         pass
+
+
+sponsor_message = Table.grid(padding=1)
+sponsor_message.add_column(style="green", justify="right")
+sponsor_message.add_column(no_wrap=True)
+
+sponsor_message.add_row(
+    "MajsoulUnlocker",
+    "[u blue link=https://github.com/shinkuan/MajsoulUnlocker]https://github.com/shinkuan/MajsoulUnlocker",
+)
+sponsor_message.add_row(
+    "RiichiCityUnlocker",
+    "[u blue link=https://github.com/shinkuan/RiichiCityUnlocker]https://github.com/shinkuan/RiichiCityUnlocker",
+)
+
+intro_message = Text.from_markup(
+        """\
+I hope you enjoy using the MajsoulUnlocker!
+
+MajsoulUnlocker is made by [link=https://github.com/shinkuan]shinkuan[/]
+
+[link=https://github.com/shinkuan/MajsoulUnlocker/issues]Open an issue[/] if you have any questions."""
+    )
+
+message = Table.grid(padding=2)
+message.add_column()
+message.add_column(no_wrap=True)
+message.add_row(intro_message, sponsor_message)
+
+console.print(
+    Panel.fit(
+        message,
+        box=box.ROUNDED,
+        padding=(1, 2),
+        title="[b cyan]Thanks for using MajsoulUnlocker!",
+        border_style="bright_blue",
+    ),
+    justify="center",
+)
+
+
+
 
 
 addons = [
