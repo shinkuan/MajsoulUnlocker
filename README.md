@@ -81,3 +81,4 @@ https://github.com/shinkuan/RandomStuff/assets/35415788/2b364ad2-08ee-49c5-b67e-
 # Thanks
 
 感謝[Majsoul Mod Plus](https://github.com/Avenshy/majsoul_mod_plus)作者，提供了獲取物品ID十分方便的腳本。
+感謝[MahjongRepository/mahjong_soul_api](https://github.com/MahjongRepository/mahjong_soul_api)提供了讀取雀魂數據的方式。
