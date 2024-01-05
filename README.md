@@ -23,6 +23,9 @@ https://github.com/shinkuan/RandomStuff/assets/35415788/e5371e99-7c43-479f-adb6-
 
 ## Basic usage
 
+- 目前適配雀魂版本：v0.11.x
+- __！注意！Steam版客戶端還停留在v0.10.x 無法使用。__
+
 - 在使用這個MITM腳本之前，你應該知道要如何透過類似Proxifier之類的工具，將麻魂的連線導向到mitmproxy。
 - 如果你不知道該怎麼做，以下是簡短教學：
   - 下載並開啟Proxifier
@@ -43,6 +46,17 @@ https://github.com/shinkuan/RandomStuff/assets/35415788/e5371e99-7c43-479f-adb6-
 # Authors
 
 * **Shinkuan** - [Shinkuan](https://github.com/shinkuan/)
+
+## Support me
+
+留個星星就可以啦
+有問題可到 [Discord](https://discord.gg/Z2wjXUK8bN) 找我
+
+# See Also
+
+### Akagi
+
+### [Riichi City Unlocker](https://github.com/shinkuan/RiichiCityUnlocker)
 
 # Thanks
 
