@@ -30,7 +30,7 @@ https://github.com/shinkuan/RandomStuff/assets/35415788/e5371e99-7c43-479f-adb6-
 - 如果你不知道該怎麼做，以下是簡短教學：
   - 下載並開啟Proxifier
   - 新增一個Proxy Server，IP: 127.0.0.1；PORT: 依你喜好
-  - 新建一個Proxification Rule，選擇將Riichi City應用的連線導向到剛剛新建的Proxy Server
+  - 新建一個Proxification Rule，選擇將Majsoul的連線導向到剛剛新建的Proxy Server
 
 1. `git clone this`
 2. `cd MajsoulUnlocker`
