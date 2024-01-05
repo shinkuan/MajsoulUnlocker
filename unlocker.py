@@ -239,6 +239,9 @@ class LiqiModify:
                     with open('./settings.json', 'w', encoding='utf-8') as f:
                         json.dump(settings, f, indent=4)
                     self.current_character = msg['data']['characterId']
+                    with open('./id/CharacterId.json', 'r', encoding='utf-8') as f:
+                        characterId = json.load(f)
+                        self.current_skin = characterId[str(self.current_character)]['init_skin']
                 if msg['method'] == '.lq.Lobby.changeCharacterSkin':
                     action = 'drop'
                     with open('./id/CharacterId.json', 'r', encoding='utf-8') as f:
