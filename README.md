@@ -54,7 +54,7 @@ https://github.com/shinkuan/RandomStuff/assets/35415788/e5371e99-7c43-479f-adb6-
 
 # See Also
 
-### Akagi
+### [Akagi](https://github.com/shinkuan/Akagi)
 
 ### [Riichi City Unlocker](https://github.com/shinkuan/RiichiCityUnlocker)
 
