@@ -17,7 +17,7 @@ console = Console()
 
 activated_flows = [] # store all flow.id ([-1] is the recently opened)
 messages_dict = dict() # flow.id -> Queue[flow_msg]
-unlock_avartar = False
+unlock_avartar = True
 
 class ClientWebSocket:
 
@@ -47,30 +47,30 @@ class ClientWebSocket:
         action, modified_liqi_msg = self.liqiModify.modify(original_liqi_msg)
         # Three kinds of action: drop, modify, fake_response | None
         if action == 'drop':
+            console.log(original_liqi_msg, style="bold green")
             console.print("Dropping Message!", style="bold red")
-            console.log(original_liqi_msg)
             flow.websocket.messages[-1].drop()
         elif action == 'modify':
+            console.log(original_liqi_msg, style="bold green")
+            console.print("Modifying Message!", style="bold red")
+            console.log(modified_liqi_msg, style="bold red")
             modified_proto_msg = self.liqi[flow.id].compose(modified_liqi_msg, msg_id=original_liqi_msg['id'])
-            flow.websocket.messages[-1].drop()
-            # Refer to mitmproxy/addons/proxyserver.py:inject_websocket
-            ctx.master.commands.call(
-                "inject.websocket", flow, not flow.websocket.messages[-1].from_client, modified_proto_msg, False
-            )
-            console.log(original_liqi_msg)
+            flow.websocket.messages[-1].content = modified_proto_msg
         elif action == 'fake_response':
+            console.log(original_liqi_msg, style="bold green")
             console.print("Faking Server Response!", style="bold red")
             console.print(f"Target: {modified_liqi_msg['method']}", style="bold red")
             fake_response = modified_liqi_msg['fake_response']
+            console.log(modified_liqi_msg, style="bold red")
+            console.log(fake_response, style="bold red")
             modified_liqi_msg.pop('fake_response')
-            console.log(modified_liqi_msg)
             
             flow.websocket.messages[-1].drop()
             fake_proto_msg = self.liqi[flow.id].compose(fake_response, msg_id=fake_response['id'])
+            # Refer to mitmproxy/addons/proxyserver.py:inject_websocket
             ctx.master.commands.call(
                 "inject.websocket", flow, True, fake_proto_msg, False
             )
-            console.log(fake_response)
         else:
             console.log(original_liqi_msg)
 
@@ -97,13 +97,17 @@ async def start_proxy(host, port):
 
 class LiqiModify:
     def __init__(self, unlock_avartar: bool = False):
-        self.unlock_avartar = True
+        self.unlock_avartar = unlock_avartar
         self.accountId = -1
         self.current_character = -1
         self.current_skin = -1
         with open('./settings.json', 'r', encoding='utf-8') as f:
             settings = json.load(f)
             self.current_character = settings['main_character']
+            self.current_title = settings['title']
+            for view in settings['views']:
+                if view['slot'] == 5:
+                    self.current_frame = view['itemId']
         with open('./id/CharacterId.json', 'r', encoding='utf-8') as f:
             characterId = json.load(f)
             self.current_skin = characterId[str(self.current_character)]['init_skin']
@@ -208,6 +212,8 @@ class LiqiModify:
                             person['character']['level'] = 5
                             person['character']['exp'] = 0
                             person['character']['isUpgraded'] = True
+                            person['title'] = self.current_title
+                            person['avatarFrame'] = self.current_frame
                 if msg['method'] == '.lq.Lobby.fetchAccountInfo':
                     action = 'modify'
                     if modify_msg['data']['account']['accountId'] == self.accountId:
@@ -222,6 +228,8 @@ class LiqiModify:
                             person['character']['level'] = 5
                             person['character']['exp'] = 0
                             person['character']['isUpgraded'] = True
+                            person['title'] = self.current_title
+                            person['avatarFrame'] = self.current_frame
                 if msg['method'] == '.lq.Lobby.fetchRoom':
                     action = 'modify'
                     for person in modify_msg['data']['persons']:
@@ -262,6 +270,9 @@ class LiqiModify:
                         'method': '.lq.Lobby.saveCommonViews',
                         'data': {}
                     }
+                    for view in msg['data']['views']:
+                        if view['slot'] == 5:
+                            self.current_frame = view['itemId']
                     with open('./settings.json', 'r', encoding='utf-8') as f:
                         settings = json.load(f)
                         settings['views'] = modify_msg['data']['views']
@@ -269,6 +280,18 @@ class LiqiModify:
                         json.dump(settings, f, indent=4)
                 if msg['method'] == '.lq.Lobby.openAllRewardItem':
                     action = 'drop'
+                if msg['method'] == '.lq.Lobby.useTitle':
+                    action = 'fake_response'
+                    with open('./settings.json', 'r', encoding='utf-8') as f:
+                        settings = json.load(f)
+                        settings['title'] = msg['data']['title']
+                        self.current_title = msg['data']['title']
+                    modify_msg['fake_response'] = {
+                        'id': msg['id'],
+                        'type': MsgType.Res,
+                        'method': '.lq.Lobby.useTitle',
+                        'data': {}
+                    }
 
             if msg['type'] == MsgType.Notify:
                 if msg['method'] == '.lq.NotifyRoomPlayerUpdate':
@@ -276,10 +299,14 @@ class LiqiModify:
                     for person in modify_msg['data']['updateList']:
                         if person['accountId'] == self.accountId:
                             person['avatarId'] = self.current_skin
+                            person['title'] = self.current_title
+                            person['avatarFrame'] = self.current_frame
                     for person in modify_msg['data']['playerList']:
                         if person['accountId'] == self.accountId:
                             person['avatarId'] = self.current_skin
-                    
+                            person['title'] = self.current_title
+                            person['avatarFrame'] = self.current_frame
+
         return action, modify_msg
 
     def parse(self, msg: dict):
@@ -339,8 +366,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--host', type=str, default='127.0.0.1')
     parser.add_argument('--port', type=int, default=7878)
-    parser.add_argument('--unlock_avartar', action='store_true')
+    parser.add_argument('--passthrough', action='store_true')
     args = parser.parse_args()
-    unlock_avartar = args.unlock_avartar
+    if args.passthrough:
+        unlock_avartar = False
+    else:
+        unlock_avartar = True
+    port = args.port
+    host = args.host
     # start proxy
-    asyncio.run(start_proxy('127.0.0.1', 7878))
+    asyncio.run(start_proxy(host, port))
