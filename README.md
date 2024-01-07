@@ -19,6 +19,16 @@ Majsoul Unlocker<br>
 
 https://github.com/shinkuan/RandomStuff/assets/35415788/e5371e99-7c43-479f-adb6-c950dbac6a4d
 
+## Changelog
+
+### 2024/1/7
+
+___
+
+- 增加了Passthrough模式，在該模式下MITM不會更動任何數據，測試腳本問題時可使用
+- 稱號以及頭像框現在可以正常使用了
+
+
 # Usage
 
 ## Basic usage
