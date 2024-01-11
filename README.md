@@ -21,6 +21,12 @@ https://github.com/shinkuan/RandomStuff/assets/35415788/e5371e99-7c43-479f-adb6-
 
 ## Changelog
 
+### 2024/1/12
+
+___
+
+- 新增了v10支持，也就是說Steam、iOS版本現在可以正常使用了。
+
 ### 2024/1/7
 
 ___
@@ -28,13 +34,14 @@ ___
 - 增加了Passthrough模式，在該模式下MITM不會更動任何數據，測試腳本問題時可使用
 - 稱號以及頭像框現在可以正常使用了
 
-
 # Usage
 
 ## Basic usage
 
-- 目前適配雀魂版本：v0.11.x
-- __！注意！Steam版客戶端還停留在v0.10.x 無法使用。__
+- 目前適配雀魂版本：v10.x ~ v0.11.x
+- 適用平台：全平台，只要你懂得如何將雀魂的連線導向到mitmproxy。
+- v10的記得要使用unlocker_v10.py
+- ~~！注意！Steam版客戶端還停留在v0.10.x 無法使用。~~ 已更新
 
 - 在使用這個MITM腳本之前，你應該知道要如何透過類似Proxifier之類的工具，將雀魂的連線導向到mitmproxy。
 - 如果你不知道該怎麼做，以下是簡短教學：
@@ -67,7 +74,7 @@ ___
 
 
 # TODO
- - [ ] 確保傳送到Server端的資料沒有使用Unlocker的跡象
+ - [ ] 確保傳送到Server端的資料沒有使用Unlocker的跡象 (應該沒有吧
  - [ ] 還是有很多Bug
 
 # Authors
