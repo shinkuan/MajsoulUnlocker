@@ -292,6 +292,8 @@ class LiqiModify:
                         settings = json.load(f)
                         settings['title'] = msg['data']['title']
                         self.current_title = msg['data']['title']
+                    with open('./settings.json', 'w', encoding='utf-8') as f:
+                        json.dump(settings, f, indent=4)
                     modify_msg['fake_response'] = {
                         'id': msg['id'],
                         'type': MsgType.Res,
