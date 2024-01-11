@@ -26,6 +26,7 @@ https://github.com/shinkuan/RandomStuff/assets/35415788/e5371e99-7c43-479f-adb6-
 ___
 
 - 新增了v10支持，也就是說Steam、iOS版本現在可以正常使用了。
+- 修正了更改稱號後沒有被存檔的bug
 
 ### 2024/1/7
 
