@@ -50,12 +50,23 @@ ___
   - 新增一個Proxy Server，IP: 127.0.0.1；PORT: 依你喜好
   - 新建一個Proxification Rule，選擇將Majsoul的連線導向到剛剛新建的Proxy Server
 
-1. `git clone this`
-2. `cd MajsoulUnlocker`
-3. `python -m venv venv`
-4. `venv\Scripts\activate.bat`
-5. `pip install -r requirements.txt`
-6. `mitmdump -s unlocker.py -p <PORT>`
+## 安裝
+
+### 下載後執行install.bat檔案
+
+bat檔案內容：
+1. `python -m venv venv`
+2. `venv\Scripts\activate.bat`
+3. `pip install -r requirements.txt`
+
+## 執行
+
+### 執行run.bat檔案
+
+bat檔案內容：
+1. `venv\Scripts\activate.bat`
+2. `mitmdump -s unlocker.py -p 7878`
+要其他port請自行修改bat內容
 
 ## 聲明
 
