@@ -1,4 +1,6 @@
 {
+    "Unlocker": true,
+    "v10": false,
     "views": [
         {
             "itemId": 308008,
@@ -15,12 +17,6 @@
         {
             "slot": 2,
             "itemId": 305315,
-            "type": 0,
-            "itemIdList": []
-        },
-        {
-            "slot": 10,
-            "itemId": 305901,
             "type": 0,
             "itemIdList": []
         },
@@ -53,7 +49,14 @@
             "itemId": 307010,
             "type": 0,
             "itemIdList": []
+        },
+        {
+            "slot": 10,
+            "itemId": 305901,
+            "type": 0,
+            "itemIdList": []
         }
     ],
-    "main_character": 200052
+    "main_character": 200076,
+    "title": 600027
 }
