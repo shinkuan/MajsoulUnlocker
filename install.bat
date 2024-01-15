@@ -8,7 +8,27 @@ if errorlevel 1 (
     echo Python 未安裝
     exit /b
 )
+goto checkVenv
 
+:askRemoveVenv
+set /p REMOVE_VENV="是否要移除現有的venv並重新創建？[Y/N]"
+if /i "%REMOVE_VENV%"=="Y" (
+    rmdir /s /q venv
+    goto CreateVenv
+) else (
+    echo 繼續使用現有的 venv
+    goto ActivateEnv
+)
+
+:checkVenv
+echo 檢查 venv 資料夾是否存在
+if exist venv (
+    echo 虛擬環境 venv 已存在
+    goto askRemoveVenv
+)
+
+
+:CreateVenv
 echo 創建 Python 虛擬環境...
 python -m venv venv
 if errorlevel 1 (
@@ -16,6 +36,7 @@ if errorlevel 1 (
     exit /b
 )
 
+:ActivateEnv
 echo 進入 Python 虛擬環境...
 CALL venv\Scripts\activate.bat
 
